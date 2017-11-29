@@ -8,7 +8,15 @@ class App extends Component {
     return (
       <div className="App">
         <h1>React Stock Market</h1>
-        <StockInfo />
+        <StockInfo
+          symbol='AAPL'
+          companyName='Apple Inc.'
+          primaryExchange='Nasdaq Global Select'
+          latestPrice={ 169.48 }
+          latestSource='Close'
+          week52High={ 176.24 }
+          week52Low={ 108.25 }
+        />
       </div>
     )
   }
