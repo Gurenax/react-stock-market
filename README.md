@@ -1,3 +1,7 @@
+# React Stock Market App
+
+![](/doc/images/app.png)
+
 ## Challenges
 1. Load and display logo for symbol using: https://iextrading.com/developer/docs/#logo
 2. Add a history of previously loaded quotes
