@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 
 import './App.css'
 import StockInfo from './components/StockInfo'
-import NewsItem from './components/NewsItem'
-import ChartItem from './components/ChartItem'
+import NewsList from './components/NewsList'
 import ChartLineGraph from './components/ChartLineGraph'
 import ChartTable from './components/ChartTable'
 
@@ -215,32 +214,15 @@ class App extends Component {
               </div>
 
               <div className="mt-3">
+                <h2>News about {companyName}</h2>
                 {!showAllNews &&
                   !!newsMin && (
-                    <div>
-                      <h2>News about {companyName}</h2>
-                      {newsMin.map((newsItem, index) => {
-                        return (
-                          <div key={'news' + index}>
-                            <NewsItem {...newsItem} />
-                            <hr />
-                          </div>
-                        )
-                      })}
-                    </div>
+                    <NewsList news={newsMin} />
                   )}
                 {showAllNews &&
                   !!news && (
                     <div>
-                      <h2>News about {companyName}</h2>
-                      {news.map((newsItem, index) => {
-                        return (
-                          <div key={'news' + index}>
-                            <NewsItem {...newsItem} />
-                            <hr />
-                          </div>
-                        )
-                      })}
+                      <NewsList news={news} />
                     </div>
                   )}
                 <button
@@ -251,6 +233,7 @@ class App extends Component {
                 </button>
               </div>
             </div>
+
             <div className="col">
               {!!chart && (
                 <div className="charts">
