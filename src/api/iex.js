@@ -11,5 +11,10 @@ export const loadQuotesForStock = (symbol) => {
 
 export const loadLogoForStock = (symbol) => {
   return api.get(`/stock/${symbol}/logo`)
-    .then( res => res.data )
+    .then( res => res.data.url )
+}
+
+export const loadRecentNewsForStock = (symbol) => {
+  return api.get(`/stock/${symbol}/news`)
+    .then( res => res.data)
 }
