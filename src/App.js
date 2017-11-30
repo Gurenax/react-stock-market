@@ -94,6 +94,8 @@ class App extends Component {
       chart,
       error
     } = this.state
+    
+    const companyName = !!quote && quote.companyName
     const chartCloses = []
     const chartDates = []
     chart.map(chartItem => {
@@ -144,11 +146,42 @@ class App extends Component {
                 </p>
               )}
               {!!quote ? <StockInfo {...quote} /> : <p>Loading...</p>}
+
+              <div className="mt-3">
+                {!!quoteHistory && (
+                  <div>
+                    <h2>Previous Quotes</h2>
+                    {quoteHistory.reverse().map((quoteHistoryItem, index) => {
+                      return (
+                        <div key={'quote' + index}>
+                          <StockInfo {...quoteHistoryItem} />
+                          <hr />
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+              <div className="mt-3">
+                {!!news && (
+                  <div>
+                  <h2>News about {companyName}</h2>
+                    {news.map((newsItem, index) => {
+                      return (
+                        <div key={'news' + index}>
+                          <NewsItem {...newsItem} />
+                          <hr />
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="col">
               {!!chart && (
                 <div className="charts">
-                <h2>6 month chart</h2>
+                <h2>{companyName} (Past 6 months)</h2>
                 <ChartLineGraph
                   title={enteredSymbol + ' CLOSE'}
                   chartLabels={chartDates}
@@ -156,68 +189,33 @@ class App extends Component {
                 />
                 </div>
               )}
+
+              <div className="mt-3">
+                {!!chart && (
+                  <div>
+                    <table className="table">
+                      <thead className="thead-dark">
+                        <tr>
+                          <th scope="col">Date</th>
+                          <th scope="col">Open</th>
+                          <th scope="col">High</th>
+                          <th scope="col">Low</th>
+                          <th scope="col">Close</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {chart.reverse().map((chartItem, index) => {
+                        return (
+                          <ChartItem key={'chartTable' + index} {...chartItem} />
+                        )
+                      })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-
-          <div className="row mt-3">
-            <div className="col">
-              {!!quoteHistory && (
-                <div>
-                  <h2>Previous Quotes</h2>
-                  {quoteHistory.reverse().map((quoteHistoryItem, index) => {
-                    return (
-                      <div key={'quote' + index}>
-                        <StockInfo {...quoteHistoryItem} />
-                        <hr />
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-
-              {!!news && (
-                <div>
-                <h2>News</h2>
-                  {news.map((newsItem, index) => {
-                    return (
-                      <div key={'news' + index}>
-                        <NewsItem {...newsItem} />
-                        <hr />
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-            <div className="col">
-              {!!chart && (
-                <div>
-                  <h2>6 month table</h2>
-                  <table class="table">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Open</th>
-                        <th scope="col">High</th>
-                        <th scope="col">Low</th>
-                        <th scope="col">Close</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {chart.reverse().map((chartItem, index) => {
-                      return (
-                        <ChartItem key={'chartTable' + index} {...chartItem} />
-                      )
-                    })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          </div>
-
-          
-
         </div>
       </div>
     )
