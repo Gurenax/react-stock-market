@@ -9,12 +9,9 @@ const NewsItem = ({
 }) => {
   return (
     <div>
-      <h3>{ headline }</h3>
+      <a href={url} target="_blank"> <h3>{ headline }</h3> </a>
       <div>
-        <em>{ datetime }</em>
-      </div>
-      <div>
-        <span>{ source } - { url }</span>
+        Source: <em>{ source }</em>, { datetime.substring(0,10) }
       </div>
       <div>
         <p>

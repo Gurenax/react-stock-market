@@ -79,6 +79,12 @@ class App extends Component {
     })
   }
 
+  onKeyDownPressEnter = event => {
+    if (event.keyCode === 13) {
+      this.loadQuote()
+    }
+  }
+
   render() {
     const {
       quote,
@@ -97,77 +103,122 @@ class App extends Component {
     })
 
     return (
-      <div className="App container">
-        <h1 className="AppTitle">React Stock Market</h1>
-
-        <input
-          value={enteredSymbol}
-          placeholder="Symbol e.g. NFLX"
-          aria-label="Symbol"
-          onChange={this.onChangeEnteredSymbol}
-        />
-        <button className="ml-1" onClick={this.loadQuote}>
-          Load Quote
-        </button>
-
-        {!!error && (
-          <p>
-            {
-              error.message // Condition that must pass for this to show
-            }
-          </p>
-        )}
-        {!!quote ? <StockInfo {...quote} /> : <p>Loading...</p>}
-
-        {!!quoteHistory && (
-          <div>
-            <hr />
-            <h2>History of Quotes</h2>
-            {quoteHistory.map((quoteHistoryItem, index) => {
-              return (
-                <div key={'quote' + index}>
-                  <StockInfo {...quoteHistoryItem} />
-                  <hr />
-                </div>
-              )
-            })}
+      <div>
+        <div className="jumbotron jumbotron-fluid bg-dark text-light">
+          <div className="container">
+            <h1 className="display-3">React Stock Market</h1>
+            <p className="lead">A simple stock market API app</p>
           </div>
-        )}
-
-        {!!news && (
-          <div>
-            <h2>News</h2>
-            {news.map((newsItem, index) => {
-              return (
-                <div key={'news' + index}>
-                  <NewsItem {...newsItem} />
-                  <hr />
-                </div>
-              )
-            })}
+        </div>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col input-group">
+              <input
+                value={enteredSymbol}
+                type="text"
+                className="form-control"
+                placeholder="Symbol e.g. NFLX"
+                aria-label="Symbol"
+                onChange={this.onChangeEnteredSymbol}
+                onKeyDown={this.onKeyDownPressEnter}
+              />
+              <span className="input-group-btn">
+                <button
+                  className="btn btn-secondary"
+                  type="button"
+                  onClick={this.loadQuote}
+                >
+                  Load Quote
+                </button>
+              </span>
+            </div>
           </div>
-        )}
-
-        {!!chart && (
-          <div>
-            <h2>6 month chart</h2>
-            <ChartLineGraph
-              title={enteredSymbol+' CLOSE'}
-              chartLabels={chartDates}
-              chartData={chartCloses}
-            />
-
-            <h2>6 month table</h2>
-            {chart.map((chartItem, index) => {
-              return (
-                <div key={'chartTable' + index}>
-                  <ChartItem {...chartItem} />
-                  <hr />
+          <div className="row mt-3">
+            <div className="col">
+              <h2>Latest Quote</h2>
+              {!!error && (
+                <p>
+                  {
+                    error.message // Condition that must pass for this to show
+                  }
+                </p>
+              )}
+              {!!quote ? <StockInfo {...quote} /> : <p>Loading...</p>}
+            </div>
+            <div className="col">
+              {!!chart && (
+                <div className="charts">
+                <h2>6 month chart</h2>
+                <ChartLineGraph
+                  title={enteredSymbol + ' CLOSE'}
+                  chartLabels={chartDates}
+                  chartData={chartCloses}
+                />
                 </div>
-              )
-            })}
+              )}
+            </div>
           </div>
-        )}
+
+          <div className="row mt-3">
+            <div className="col">
+              {!!quoteHistory && (
+                <div>
+                  <h2>Previous Quotes</h2>
+                  {quoteHistory.reverse().map((quoteHistoryItem, index) => {
+                    return (
+                      <div key={'quote' + index}>
+                        <StockInfo {...quoteHistoryItem} />
+                        <hr />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              {!!news && (
+                <div>
+                <h2>News</h2>
+                  {news.map((newsItem, index) => {
+                    return (
+                      <div key={'news' + index}>
+                        <NewsItem {...newsItem} />
+                        <hr />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+            <div className="col">
+              {!!chart && (
+                <div>
+                  <h2>6 month table</h2>
+                  <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Open</th>
+                        <th scope="col">High</th>
+                        <th scope="col">Low</th>
+                        <th scope="col">Close</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {chart.reverse().map((chartItem, index) => {
+                      return (
+                        <ChartItem key={'chartTable' + index} {...chartItem} />
+                      )
+                    })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+
+          
+
+        </div>
       </div>
     )
   }

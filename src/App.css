@@ -3,7 +3,7 @@
   margin: auto;
 } */
 
-.AppTitle {
+/* .AppTitle {
   background: black;
   color: white;
   padding: 0.5rem;
@@ -13,4 +13,20 @@
   background: white;
   color: black;
   transition: ease 0.4s;
+} */
+
+.card {
+  min-width: 30rem;
+  /* max-width: 30rem; */
 }
+
+.charts {
+  min-width: 30rem;
+  max-width: 30rem;
+}
+
+/* .quote-image {
+  max-width: 200px;
+  min-width: 200px;
+  height: auto;
+} */
