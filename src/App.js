@@ -220,8 +220,8 @@ class App extends Component {
                   )}
               </div>
 
-              <div className="mt-3">
-                <h2 className="text-center">News about {companyName}</h2>
+              <div className="mt-5">
+                <h2>{ !!companyName && 'News about '+companyName }</h2>
                 {!showAllNews && !!newsMin && <NewsList news={newsMin} />}
                 {showAllNews &&
                   !!news && (
