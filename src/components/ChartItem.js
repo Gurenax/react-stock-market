@@ -16,7 +16,7 @@ const ChartItem = ({
 }) => {
   return (
     <div>
-      <h4>{ date }</h4>
+      <h4>{ label }</h4>
       <dl>
         <dt>Open</dt>
         <dd>{ open }</dd>
@@ -44,9 +44,6 @@ const ChartItem = ({
 
         <dt>vwap</dt>
         <dd>{ vwap }</dd>
-
-        <dt>Label</dt>
-        <dd>{ label }</dd>
 
         <dt>Change Over Time</dt>
         <dd>{ changeOverTime }</dd>
