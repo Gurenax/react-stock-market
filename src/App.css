@@ -2,3 +2,10 @@
   max-width: 30rem;
   margin: auto;
 }
+
+.AppTitle {
+  background: black;
+  color: white;
+  padding: 0.5rem;
+  text-align: center;
+}
