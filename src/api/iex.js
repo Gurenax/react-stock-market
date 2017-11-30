@@ -18,3 +18,8 @@ export const loadRecentNewsForStock = (symbol) => {
   return api.get(`/stock/${symbol}/news`)
     .then( res => res.data)
 }
+
+export const loadChartForStock = (symbol, range) => {
+  return api.get(`/stock/${symbol}/chart/${range}`)
+    .then( res => res.data)
+}

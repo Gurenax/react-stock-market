@@ -3,8 +3,9 @@ import React, { Component } from 'react'
 import './App.css'
 import StockInfo from './components/StockInfo'
 import NewsItem from './components/NewsItem'
+import ChartItem from './components/ChartItem'
 
-import { loadQuotesForStock, loadLogoForStock, loadRecentNewsForStock } from './api/iex'
+import { loadQuotesForStock, loadLogoForStock, loadRecentNewsForStock, loadChartForStock } from './api/iex'
 
 class App extends Component {
   state = {
@@ -27,10 +28,11 @@ class App extends Component {
     Promise.all([
       loadQuotesForStock(enteredSymbol),
       loadLogoForStock(enteredSymbol),
-      loadRecentNewsForStock( enteredSymbol )
+      loadRecentNewsForStock( enteredSymbol ),
+      loadChartForStock( enteredSymbol, '6m' )
     ])
     .then( (values) => {
-      const [quote, logo, news] = values
+      const [quote, logo, news, chart] = values
       this.setState( (prevState) => {
         // Merge the quote and logo
         const quoteWithLogo = { ...quote, logo: logo }
@@ -42,7 +44,8 @@ class App extends Component {
           quote: quoteWithLogo,
           error: null,
           quoteHistory: history,
-          news: news
+          news: news,
+          chart: chart
         }
       })
     })
@@ -67,7 +70,7 @@ class App extends Component {
   }
 
   render() {
-    const { quote, enteredSymbol, quoteHistory, news, error } = this.state
+    const { quote, enteredSymbol, quoteHistory, news, chart, error } = this.state
 
     return (
       <div className="App">
@@ -115,6 +118,22 @@ class App extends Component {
                 return (
                   <div key={'news'+index}>
                     <NewsItem { ...newsItem } />
+                    <hr />
+                  </div>
+                )
+              })
+            }
+          </div>
+        }
+
+        {!!chart &&
+          <div>
+            <h2>6 month table</h2>
+            {
+              chart.map( (chartItem, index) => {
+                return (
+                  <div key={'chartTable'+index}>
+                    <ChartItem { ...chartItem } />
                     <hr />
                   </div>
                 )
