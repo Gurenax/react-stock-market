@@ -5,6 +5,7 @@ import StockInfo from './components/StockInfo'
 import NewsItem from './components/NewsItem'
 import ChartItem from './components/ChartItem'
 import ChartLineGraph from './components/ChartLineGraph'
+import ChartTable from './components/ChartTable'
 
 import {
   loadQuotesForStock,
@@ -21,7 +22,9 @@ class App extends Component {
     quoteHistory: [],
     showHistory: false,
     news: [],
-    chart: []
+    showAllNews: false,
+    chart: [],
+    showAllChart: false
   }
 
   // The first time our component is rendered
@@ -95,6 +98,24 @@ class App extends Component {
     })
   }
 
+  onClickShowAllChart = event => {
+    this.setState(prevState => {
+      const showAllChart = prevState.showAllChart
+      return {
+        showAllChart: !showAllChart
+      }
+    })
+  }
+
+  onClickShowAllNews = event => {
+    this.setState(prevState => {
+      const showAllNews = prevState.showAllNews
+      return {
+        showAllNews: !showAllNews
+      }
+    })
+  }
+
   render() {
     const {
       quote,
@@ -102,12 +123,18 @@ class App extends Component {
       quoteHistory,
       showHistory,
       news,
+      showAllNews,
       chart,
+      showAllChart,
       error
     } = this.state
 
     const chartReverse = [...chart].reverse()
+    const chartReverseMin = chartReverse.slice(0, 12)
+
     const quoteHistoryReverse = [...quoteHistory].reverse()
+
+    const newsMin = [...news].slice(0, 2)
 
     const companyName = !!quote && quote.companyName
     const chartCloses = []
@@ -162,7 +189,10 @@ class App extends Component {
               {!!quote ? <StockInfo {...quote} /> : <p>Loading...</p>}
 
               <div className="mt-3">
-                <button className="btn btn-dark btn-block" onClick={this.onClickShowHistory}>
+                <button
+                  className="btn btn-dark btn-block"
+                  onClick={this.onClickShowHistory}
+                >
                   {showHistory ? 'Hide History' : 'Show History'}
                 </button>
               </div>
@@ -185,19 +215,40 @@ class App extends Component {
               </div>
 
               <div className="mt-3">
-                {!!news && (
-                  <div>
-                    <h2>News about {companyName}</h2>
-                    {news.map((newsItem, index) => {
-                      return (
-                        <div key={'news' + index}>
-                          <NewsItem {...newsItem} />
-                          <hr />
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
+                {!showAllNews &&
+                  !!newsMin && (
+                    <div>
+                      <h2>News about {companyName}</h2>
+                      {newsMin.map((newsItem, index) => {
+                        return (
+                          <div key={'news' + index}>
+                            <NewsItem {...newsItem} />
+                            <hr />
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                {showAllNews &&
+                  !!news && (
+                    <div>
+                      <h2>News about {companyName}</h2>
+                      {news.map((newsItem, index) => {
+                        return (
+                          <div key={'news' + index}>
+                            <NewsItem {...newsItem} />
+                            <hr />
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                <button
+                  className="btn btn-dark btn-block"
+                  onClick={this.onClickShowAllNews}
+                >
+                  {showAllNews ? 'Show Less' : 'Show All'}
+                </button>
               </div>
             </div>
             <div className="col">
@@ -213,31 +264,16 @@ class App extends Component {
               )}
 
               <div className="mt-3">
-                {!!chart && (
-                  <div>
-                    <table className="table">
-                      <thead className="thead-dark">
-                        <tr>
-                          <th scope="col">Date</th>
-                          <th scope="col">Open</th>
-                          <th scope="col">High</th>
-                          <th scope="col">Low</th>
-                          <th scope="col">Close</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {chartReverse.map((chartItem, index) => {
-                          return (
-                            <ChartItem
-                              key={'chartTable' + index}
-                              {...chartItem}
-                            />
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                {!showAllChart &&
+                  !!chartReverseMin && <ChartTable chart={chartReverseMin} />}
+                {showAllChart &&
+                  !!chartReverse && <ChartTable chart={chartReverse} />}
+                <button
+                  className="btn btn-dark btn-block"
+                  onClick={this.onClickShowAllChart}
+                >
+                  {showAllChart ? 'Show Less' : 'Show All'}
+                </button>
               </div>
             </div>
           </div>
