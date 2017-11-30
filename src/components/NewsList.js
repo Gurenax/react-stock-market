@@ -8,8 +8,8 @@ const NewsList = ({
     {news.map((newsItem, index) => {
       return (
         <div key={'news' + index}>
-          <NewsItem {...newsItem} />
           <hr />
+          <NewsItem {...newsItem} />
         </div>
       )
     })}

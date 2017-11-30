@@ -7,22 +7,27 @@ const ChartItem = ({
   low,
   close,
   volume,
-  unadjustedVolume,
-  change,
-  changePercent,
-  vwap,
-  label,
-  changeOverTime
+  stockIsUp
+  // unadjustedVolume,
+  // change,
+  // changePercent,
+  // vwap,
+  // label,
+  // changeOverTime
 }) => {
   return (
     <tr>
-      <th scope="row">{ date }</th>
-      <td>{ open }</td>
-      <td>{ high }</td>
-      <td>{ low }</td>
-      <td>{ close }</td>
-    </tr> 
+      <th scope="row">{date}</th>
+      <td>{open}</td>
+      <td>{high}</td>
+      <td>{low}</td>
+      <td className={!!stockIsUp ? 'text-success' : 'text-danger'}>
+        {
+          !!stockIsUp ? String.fromCharCode(9650)+' '+close : String.fromCharCode(9660)+' '+close
+        }
+      </td>
+    </tr>
   )
 }
 
-export default ChartItem;
+export default ChartItem

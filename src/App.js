@@ -145,7 +145,7 @@ class App extends Component {
     })
 
     return (
-      <div>
+      <div className="App pb-3">
         <div className="jumbotron jumbotron-fluid bg-dark text-light">
           <div className="container">
             <h1 className="display-3">React Stock Market</h1>
@@ -174,17 +174,24 @@ class App extends Component {
             </div>
           </div>
         </div>
+
         <div className="container-fluid">
-          <div className="row mt-3">
-            <div className="col">
-              <h2>Latest Quote</h2>
-              {!!error && (
+          <div className="row">
+            {!!error && (
+              <div className="col alert alert-danger" rolw="alert">
+                <h4 class="alert-heading">Sadly..</h4>
                 <p>
                   {
                     error.message // Condition that must pass for this to show
                   }
                 </p>
-              )}
+              </div>
+            )}
+          </div>
+
+          <div className="row mt-3">
+            <div className="col">
+              <h2>Latest Quote</h2>
               {!!quote ? <StockInfo {...quote} /> : <p>Loading...</p>}
 
               <div className="mt-3">
@@ -200,7 +207,7 @@ class App extends Component {
                 {showHistory &&
                   !!quoteHistory && (
                     <div>
-                      <h2>Previous Quotes</h2>
+                      <h2 className="text-center">Previous Quotes</h2>
                       {quoteHistoryReverse.map((quoteHistoryItem, index) => {
                         return (
                           <div key={'quote' + index}>
@@ -214,11 +221,8 @@ class App extends Component {
               </div>
 
               <div className="mt-3">
-                <h2>News about {companyName}</h2>
-                {!showAllNews &&
-                  !!newsMin && (
-                    <NewsList news={newsMin} />
-                  )}
+                <h2 className="text-center">News about {companyName}</h2>
+                {!showAllNews && !!newsMin && <NewsList news={newsMin} />}
                 {showAllNews &&
                   !!news && (
                     <div>
@@ -237,7 +241,9 @@ class App extends Component {
             <div className="col">
               {!!chart && (
                 <div className="charts">
-                  <h2>{companyName} (Past 6 months)</h2>
+                  <h2 className="text-center">
+                    {!!companyName && companyName + ' (Past 6 months)'}
+                  </h2>
                   <ChartLineGraph
                     title={enteredSymbol}
                     chartLabels={chartDates}
