@@ -2,18 +2,22 @@ import React, { Component } from 'react'
 // import logo from './logo.svg'
 import './App.css'
 import StockInfo from './components/StockInfo'
+import { loadQuotesForStock } from './api/iex'
 
 class App extends Component {
   state = {
-    quote: {
-      symbol: 'AAPL',
-      companyName: 'Apple Inc.',
-      primaryExchange: 'Nasdaq Global Select',
-      latestPrice: 169.48,
-      latestSource: 'Close',
-      week52High: 176.24,
-      week52Low: 108.25,
-    }
+    quote: null
+  }
+
+  // The first time our component is rendered
+  // this method is called
+  componentDidMount() {
+    loadQuotesForStock('nflx')
+      .then( (quote) => {
+        this.setState({
+          quote: quote
+        })
+      })
   }
 
   render() {
@@ -22,9 +26,16 @@ class App extends Component {
     return (
       <div className="App">
         <h1>React Stock Market</h1>
-        <StockInfo
-          { ...quote }
-        />
+        {
+          !!quote ? (
+            <StockInfo
+              { ...quote }
+            />
+          ) : (
+            <p>Loading...</p>
+          )
+        }
+        
       </div>
     )
   }
