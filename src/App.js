@@ -97,7 +97,7 @@ class App extends Component {
     })
 
     return (
-      <div className="App">
+      <div className="App container">
         <h1 className="AppTitle">React Stock Market</h1>
 
         <input
