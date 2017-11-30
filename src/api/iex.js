@@ -8,3 +8,8 @@ export const loadQuotesForStock = (symbol) => {
   return api.get(`/stock/${symbol}/quote`)
     .then( res => res.data )
 }
+
+export const loadLogoForStock = (symbol) => {
+  return api.get(`/stock/${symbol}/logo`)
+    .then( res => res.data )
+}

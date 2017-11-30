@@ -7,11 +7,13 @@ const StockInfo = ({
   latestPrice, // 169.48
   latestSource, // Close
   week52High, // 176.24
-  week52Low // 108.25
+  week52Low, // 108.25
+  logo
 }) => {
   return (
     <div>
       <h2>{ symbol }: { companyName }</h2>
+      <img src={ logo } alt='' />
       <h3>{ latestPrice } ({ latestSource })</h3>
       <dl>
         <dt>Week 52 High</dt>

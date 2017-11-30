@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 // import logo from './logo.svg'
 import './App.css'
 import StockInfo from './components/StockInfo'
-import { loadQuotesForStock } from './api/iex'
+import { loadQuotesForStock, loadLogoForStock } from './api/iex'
 
 class App extends Component {
   state = {
     error: null,
     enteredSymbol: 'NFLX',
-    quote: null
+    quote: null,
+    logo: null
   }
 
   // The first time our component is rendered
@@ -53,6 +54,21 @@ class App extends Component {
         // console.error('Error loading quote', error)
         console.error('Error loading quote', error.message)
       })
+
+    loadLogoForStock(enteredSymbol)
+      .then(logo => {
+        this.setState({
+          logo: logo.url
+        })
+      })
+      .catch(error => {
+        // If 404 not found
+        if (error.response.status === 404) {
+          error = new Error(`The stock symbol ${enteredSymbol} does not exist`)
+        }
+        this.setState({ error: error })
+        console.error('Error loading logo', error.message)
+      })
   }
 
   onChangeEnteredSymbol = (event) => {
@@ -66,7 +82,7 @@ class App extends Component {
   }
 
   render() {
-    const { quote, enteredSymbol, error } = this.state
+    const { quote, enteredSymbol, logo, error } = this.state
 
     return (
       <div className="App">
@@ -87,7 +103,7 @@ class App extends Component {
 
         {!!error && <p>{error.message // Condition that must pass for this to show
           }</p>}
-        {!!quote ? <StockInfo {...quote} /> : <p>Loading...</p>}
+        {!!quote ? <StockInfo {...quote} logo={ logo } /> : <p>Loading...</p>}
       </div>
     )
   }
