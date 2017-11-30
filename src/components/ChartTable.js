@@ -17,8 +17,7 @@ const ChartTable = ({ chart }) => {
         </thead>
         <tbody>
           {chart.map((chartItem, index) => {
-            const lastClose = index < chartLength-1 ? chart[index + 1].close : chart.open
-            return chartItem.close > lastClose ? (
+            return chartItem.change < 0 ? (
               <ChartItem key={'chartTable' + index} {...chartItem} stockIsUp />
             ) : (
               <ChartItem key={'chartTable' + index} {...chartItem} />
