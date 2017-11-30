@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Line as LineChart} from 'react-chartjs-2'
 // import logo from './logo.svg'
 import './App.css'
 import StockInfo from './components/StockInfo'
@@ -13,7 +14,8 @@ class App extends Component {
     enteredSymbol: 'NFLX',
     quote: null,
     quoteHistory: [],
-    news: []
+    news: [],
+    chart: []
   }
 
   // The first time our component is rendered
@@ -71,7 +73,45 @@ class App extends Component {
 
   render() {
     const { quote, enteredSymbol, quoteHistory, news, chart, error } = this.state
-
+    const chartDataClose = []
+    const chartDataDates = []
+    this.state.chart.map( chartItem => {
+      chartDataClose.push(chartItem.close)
+      chartDataDates.push(chartItem.date)
+    })
+    const chartData = {
+      labels: chartDataDates, //["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [{
+          label: `${enteredSymbol}`,
+          data: chartDataClose, //[12, 19, 3, 5, 2, 3],
+          backgroundColor: [
+              'rgba(255, 99, 132, 0.2)'
+              // 'rgba(54, 162, 235, 0.2)',
+              // 'rgba(255, 206, 86, 0.2)',
+              // 'rgba(75, 192, 192, 0.2)',
+              // 'rgba(153, 102, 255, 0.2)',
+              // 'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+              'rgba(255,99,132,1)'
+              // 'rgba(54, 162, 235, 1)',
+              // 'rgba(255, 206, 86, 1)',
+              // 'rgba(75, 192, 192, 1)',
+              // 'rgba(153, 102, 255, 1)',
+              // 'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+      }]
+    }
+    const chartOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
     return (
       <div className="App">
         <h1 className="AppTitle">React Stock Market</h1>
@@ -128,6 +168,8 @@ class App extends Component {
 
         {!!chart &&
           <div>
+            <h2>6 month chart</h2>
+            <LineChart data={chartData} options={chartOptions}/>
             <h2>6 month table</h2>
             {
               chart.map( (chartItem, index) => {
