@@ -19,6 +19,7 @@ class App extends Component {
     enteredSymbol: 'NFLX',
     quote: null,
     quoteHistory: [],
+    showHistory: false,
     news: [],
     chart: []
   }
@@ -85,16 +86,29 @@ class App extends Component {
     }
   }
 
+  onClickShowHistory = event => {
+    this.setState(prevState => {
+      const showHistory = prevState.showHistory
+      return {
+        showHistory: !showHistory
+      }
+    })
+  }
+
   render() {
     const {
       quote,
       enteredSymbol,
       quoteHistory,
+      showHistory,
       news,
       chart,
       error
     } = this.state
-    
+
+    const chartReverse = [...chart].reverse()
+    const quoteHistoryReverse = [...quoteHistory].reverse()
+
     const companyName = !!quote && quote.companyName
     const chartCloses = []
     const chartDates = []
@@ -110,31 +124,31 @@ class App extends Component {
           <div className="container">
             <h1 className="display-3">React Stock Market</h1>
             <p className="lead">A simple stock market API app</p>
+            <div className="row">
+              <div className="col input-group">
+                <input
+                  value={enteredSymbol}
+                  type="text"
+                  className="form-control"
+                  placeholder="Symbol e.g. NFLX"
+                  aria-label="Symbol"
+                  onChange={this.onChangeEnteredSymbol}
+                  onKeyDown={this.onKeyDownPressEnter}
+                />
+                <span className="input-group-btn">
+                  <button
+                    className="btn btn-secondary"
+                    type="button"
+                    onClick={this.loadQuote}
+                  >
+                    Load Quote
+                  </button>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         <div className="container-fluid">
-          <div className="row">
-            <div className="col input-group">
-              <input
-                value={enteredSymbol}
-                type="text"
-                className="form-control"
-                placeholder="Symbol e.g. NFLX"
-                aria-label="Symbol"
-                onChange={this.onChangeEnteredSymbol}
-                onKeyDown={this.onKeyDownPressEnter}
-              />
-              <span className="input-group-btn">
-                <button
-                  className="btn btn-secondary"
-                  type="button"
-                  onClick={this.loadQuote}
-                >
-                  Load Quote
-                </button>
-              </span>
-            </div>
-          </div>
           <div className="row mt-3">
             <div className="col">
               <h2>Latest Quote</h2>
@@ -148,24 +162,32 @@ class App extends Component {
               {!!quote ? <StockInfo {...quote} /> : <p>Loading...</p>}
 
               <div className="mt-3">
-                {!!quoteHistory && (
-                  <div>
-                    <h2>Previous Quotes</h2>
-                    {quoteHistory.reverse().map((quoteHistoryItem, index) => {
-                      return (
-                        <div key={'quote' + index}>
-                          <StockInfo {...quoteHistoryItem} />
-                          <hr />
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
+                <button className="btn btn-dark btn-block" onClick={this.onClickShowHistory}>
+                  {showHistory ? 'Hide History' : 'Show History'}
+                </button>
               </div>
+
+              <div className="mt-3">
+                {showHistory &&
+                  !!quoteHistory && (
+                    <div>
+                      <h2>Previous Quotes</h2>
+                      {quoteHistoryReverse.map((quoteHistoryItem, index) => {
+                        return (
+                          <div key={'quote' + index}>
+                            <StockInfo {...quoteHistoryItem} />
+                            <hr />
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+              </div>
+
               <div className="mt-3">
                 {!!news && (
                   <div>
-                  <h2>News about {companyName}</h2>
+                    <h2>News about {companyName}</h2>
                     {news.map((newsItem, index) => {
                       return (
                         <div key={'news' + index}>
@@ -181,12 +203,12 @@ class App extends Component {
             <div className="col">
               {!!chart && (
                 <div className="charts">
-                <h2>{companyName} (Past 6 months)</h2>
-                <ChartLineGraph
-                  title={enteredSymbol + ' CLOSE'}
-                  chartLabels={chartDates}
-                  chartData={chartCloses}
-                />
+                  <h2>{companyName} (Past 6 months)</h2>
+                  <ChartLineGraph
+                    title={enteredSymbol}
+                    chartLabels={chartDates}
+                    chartData={chartCloses}
+                  />
                 </div>
               )}
 
@@ -204,11 +226,14 @@ class App extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                      {chart.reverse().map((chartItem, index) => {
-                        return (
-                          <ChartItem key={'chartTable' + index} {...chartItem} />
-                        )
-                      })}
+                        {chartReverse.map((chartItem, index) => {
+                          return (
+                            <ChartItem
+                              key={'chartTable' + index}
+                              {...chartItem}
+                            />
+                          )
+                        })}
                       </tbody>
                     </table>
                   </div>
