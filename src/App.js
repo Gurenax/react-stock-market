@@ -199,7 +199,7 @@ class App extends Component {
                   className="btn btn-dark btn-block"
                   onClick={this.onClickShowHistory}
                 >
-                  {showHistory ? 'Hide History' : 'Show History'}
+                  {showHistory ? 'Hide Previous Quotes' : 'Show Previous Quotes'}
                 </button>
               </div>
 
