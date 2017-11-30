@@ -1,6 +1,6 @@
 # React Stock Market App
 
-![](/doc/images/app1.png)
+![](/doc/images/app.png)
 
 ## Challenges
 1. Load and display logo for symbol using: https://iextrading.com/developer/docs/#logo

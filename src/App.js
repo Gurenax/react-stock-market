@@ -139,7 +139,7 @@ class App extends Component {
     const chartCloses = []
     const chartDates = []
     chart.map(chartItem => {
-      chartDates.push(chartItem.date)
+      chartDates.push(chartItem.label)
       chartCloses.push(chartItem.close)
       return null
     })
