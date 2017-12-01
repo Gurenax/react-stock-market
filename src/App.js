@@ -65,7 +65,6 @@ class App extends Component {
           error = new Error(`The stock symbol ${enteredSymbol} does not exist`)
         }
         this.setState({ error: error })
-        console.error('Error loading logo', error.message)
       })
   }
 
